@@ -40,32 +40,43 @@ def search1(IUB_map):
     you_loc=[(row_i,col_i) for col_i in range(len(IUB_map[0])) for row_i in range(len(IUB_map)) if IUB_map[row_i][col_i]=="#"][0]
     luddy_loc=[(row_i,col_i) for col_i in range(len(IUB_map[0])) for row_i in range(len(IUB_map)) if IUB_map[row_i][col_i]=="@"][0]
     heuristic=heuristic_generator(IUB_map,luddy_loc)
-    fringe=[(you_loc,0,heuristic[you_loc[0]][you_loc[1]],0+heuristic[you_loc[0]][you_loc[1]])]
+    fringe=[(you_loc,0,heuristic[you_loc[0]][you_loc[1]],0+heuristic[you_loc[0]][you_loc[1]],'')]
     #print(fringe)
     fringe_counter=1
     #print(fringe[0][0])
     #print("heuristic of starting point is:" +str(heuristic[fringe[0][0][0]][1]))
     while fringe:
         min_index=fringe.index(min(fringe, key=lambda x: x[3]))
-        (curr_move, curr_dist,heuristic_apx,total_cost)=fringe.pop(min_index)
+        (curr_move, curr_dist,heuristic_apx,total_cost,path)=fringe.pop(min_index)
         fringe_counter+=1
         for move in moves(IUB_map, *curr_move):
             if IUB_map[move[0]][move[1]]=="@":
                 print("lenght of the fringe"+str(fringe_counter))
-                return curr_dist+1
+                return (curr_dist+1),heuristic_apx,total_cost,path
             else:
                 #print((move, curr_dist + 1, heuristic[move[1]][move[0]], curr_dist + 1+ heuristic[move[1]][move[0]]))
-                fringe.append((move, curr_dist + 1, heuristic[move[1]][move[0]], curr_dist + 1+ heuristic[move[1]][move[0]]))
+                path+="N"
+                if curr_move[0]==move[0] :
+                    if curr_move[1]==(move[1]-1) :
+                        direction="E"
+                    else:
+                        direction="W"
+                elif curr_move[1]==(move[1]+1) :
+                    direction="N"
+                else:
+                    direction="S"
+                path+=direction
+                fringe.append((move, curr_dist + 1, heuristic[move[1]][move[0]], curr_dist + 1+ heuristic[move[1]][move[0]],path))
 
 # Main Function
 if __name__ == "__main__":
     IUB_map=parse_map(sys.argv[1])
     print("Shhhh... quiet while I navigate!")
     start= timeit.default_timer()    
-    solution = search1(IUB_map)
+    curr_dist,heuristic_apx,total_cost,path, = search1(IUB_map)
     end= timeit.default_timer()    
     print("Here's the solution I found:")
-    print(solution)
+    print(curr_dist,heuristic_apx,total_cost,path)
     print("Time:")
     print(end-start)
     
