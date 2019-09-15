@@ -32,25 +32,30 @@ def heuristic_generator(IUB_map,luddy_loc):
             colarray_i.append(luddy_loc[0]-row_i+luddy_loc[1]-col_i)
         heuristic.append(colarray_i.copy())
         colarray_i.clear()
-    print(heuristic)
+    #print(heuristic)
+    return heuristic
 # Perform search on the map
 def search1(IUB_map):
-	# Find my start position
+    # Find my start position
     you_loc=[(row_i,col_i) for col_i in range(len(IUB_map[0])) for row_i in range(len(IUB_map)) if IUB_map[row_i][col_i]=="#"][0]
-    fringe=[(you_loc,0)]
-    fringe_counter=1
     luddy_loc=[(row_i,col_i) for col_i in range(len(IUB_map[0])) for row_i in range(len(IUB_map)) if IUB_map[row_i][col_i]=="@"][0]
-    print(luddy_loc[0],luddy_loc[1])
-    heuristic_generator(IUB_map,luddy_loc)
+    heuristic=heuristic_generator(IUB_map,luddy_loc)
+    fringe=[(you_loc,0,heuristic[you_loc[0]][you_loc[1]],0+heuristic[you_loc[0]][you_loc[1]])]
+    #print(fringe)
+    fringe_counter=1
+    #print(fringe[0][0])
+    #print("heuristic of starting point is:" +str(heuristic[fringe[0][0][0]][1]))
     while fringe:
-        (curr_move, curr_dist)=fringe.pop(0)
+        min_index=fringe.index(min(fringe, key=lambda x: x[3]))
+        (curr_move, curr_dist,heuristic_apx,total_cost)=fringe.pop(min_index)
         fringe_counter+=1
         for move in moves(IUB_map, *curr_move):
             if IUB_map[move[0]][move[1]]=="@":
                 print("lenght of the fringe"+str(fringe_counter))
                 return curr_dist+1
             else:
-                fringe.append((move, curr_dist + 1))
+                #print((move, curr_dist + 1, heuristic[move[1]][move[0]], curr_dist + 1+ heuristic[move[1]][move[0]]))
+                fringe.append((move, curr_dist + 1, heuristic[move[1]][move[0]], curr_dist + 1+ heuristic[move[1]][move[0]]))
 
 # Main Function
 if __name__ == "__main__":
