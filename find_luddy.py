@@ -22,21 +22,30 @@ def valid_index(pos, n, m):
 # Find the possible moves from position (row, col)
 def moves(map, row, col):
     moves=((row+1,col), (row-1,col), (row,col-1), (row,col+1))
-    print("moves")
-    print(moves)
     return [ move for move in moves if valid_index(move, len(map), len(map[0])) and (map[move[0]][move[1]] in ".@" ) ]
 
+def heuristic_generator(IUB_map,luddy_loc):
+    heuristic=[]
+    colarray_i=[]
+    for col_i in range(len(IUB_map[0])):
+        for row_i in range(len(IUB_map)):
+            colarray_i.append(luddy_loc[0]-row_i+luddy_loc[1]-col_i)
+        heuristic.append(colarray_i.copy())
+        colarray_i.clear()
+    print(heuristic)
 # Perform search on the map
 def search1(IUB_map):
 	# Find my start position
     you_loc=[(row_i,col_i) for col_i in range(len(IUB_map[0])) for row_i in range(len(IUB_map)) if IUB_map[row_i][col_i]=="#"][0]
     fringe=[(you_loc,0)]
     fringe_counter=1
+    luddy_loc=[(row_i,col_i) for col_i in range(len(IUB_map[0])) for row_i in range(len(IUB_map)) if IUB_map[row_i][col_i]=="@"][0]
+    print(luddy_loc[0],luddy_loc[1])
+    heuristic_generator(IUB_map,luddy_loc)
     while fringe:
         (curr_move, curr_dist)=fringe.pop(0)
         fringe_counter+=1
         for move in moves(IUB_map, *curr_move):
-            print(IUB_map[move[0]][move[1]])
             if IUB_map[move[0]][move[1]]=="@":
                 print("lenght of the fringe"+str(fringe_counter))
                 return curr_dist+1
