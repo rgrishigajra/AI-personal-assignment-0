@@ -29,7 +29,7 @@ def heuristic_generator(IUB_map,luddy_loc):
     colarray_i=[]
     for col_i in range(len(IUB_map[0])):
         for row_i in range(len(IUB_map)):
-            colarray_i.append(luddy_loc[0]-row_i+luddy_loc[1]-col_i)
+            colarray_i.append(abs(luddy_loc[0]-row_i)+abs(luddy_loc[1]-col_i))
         heuristic.append(colarray_i.copy())
         colarray_i.clear()
     #print(heuristic)
@@ -67,6 +67,8 @@ def search1(IUB_map):
                 curr_path.append(curr_move[0])
                 curr_path.append(curr_move[1])
                 if IUB_map[move[0]][move[1]]=="@":
+                    curr_path.append(move[0])
+                    curr_path.append(move[1])
                     print("lenght of the fringe"+str(fringe_counter))
                     return (curr_dist+1),heuristic_apx,total_cost,curr_path
                 else:
@@ -77,13 +79,24 @@ def search1(IUB_map):
 if __name__ == "__main__":
     IUB_map=parse_map(sys.argv[1])
     print("Shhhh... quiet while I navigate!")
+    directions=""
     start= timeit.default_timer()    
     curr_dist,heuristic_apx,total_cost,final_path, = search1(IUB_map)
     end= timeit.default_timer()    
     print("Here's the solution I found:")
+    for i in range(0,(len(final_path)-2),2):
+        if final_path[i]-final_path[i+2]==0:
+            if(final_path[i+1]-final_path[i+3])==1:
+                directions+="W"
+            else:
+                directions+="E"
+        elif final_path[i]-final_path[i+2]==1:
+            directions+="N"
+        else:
+            directions+="S"
     print(curr_dist,heuristic_apx,total_cost,final_path)
-    for i in range(2,len(final_path)):
-        if final_path[i]-final_path[]
+    print(directions)
     print("Time:")
     print(end-start)
+    
     
