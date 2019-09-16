@@ -67,14 +67,14 @@ def search1(IUB_map):
         for move in moves(IUB_map, *curr_move):
             if visited[move[1]][move[0]]==0 :
                 visited[move[1]][move[0]]=1
-                print(curr_path[-1],curr_path[-2],curr_move[0],curr_move[1])
+                #print(curr_path[-1],curr_path[-2],curr_move[0],curr_move[1])
                 if curr_path[-2]!=(curr_move[0]) or curr_path[-1]!=(curr_move[1]) :
                     curr_path.append(curr_move[0])
                     curr_path.append(curr_move[1])                
                 if IUB_map[move[0]][move[1]]=="@":
                     curr_path.append(move[0])
                     curr_path.append(move[1])
-                    print("lenght of the fringe"+str(fringe_counter))
+                    #print("lenght of the fringe"+str(fringe_counter))
                     return (curr_dist+1),heuristic_apx,total_cost,curr_path
                 else:
                     #print((move, curr_dist + 1, heuristic[move[1]][move[0]], curr_dist + 1+ heuristic[move[1]][move[0]]))
@@ -99,9 +99,7 @@ if __name__ == "__main__":
             directions+="N"
         else:
             directions+="S"
-    print(curr_dist,heuristic_apx,total_cost,final_path)
-    print(directions)
-    print("Time:")
-    print(end-start)
+    print(curr_dist,directions)
+    #print(end-start)
     
     
