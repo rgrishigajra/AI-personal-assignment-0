@@ -52,6 +52,8 @@ def search1(IUB_map):
     heuristic=heuristic_generator(IUB_map,luddy_loc)
     visited=visited_array(IUB_map)
     path=[]
+    path.append(you_loc[0])
+    path.append(you_loc[1])
     fringe=[(you_loc,0,heuristic[you_loc[0]][you_loc[1]],0+heuristic[you_loc[0]][you_loc[1]],path)]
     #print(fringe)
     fringe_counter=0
@@ -60,12 +62,15 @@ def search1(IUB_map):
     while fringe:
         min_index=fringe.index(min(fringe, key=lambda x: x[3]))
         (curr_move, curr_dist,heuristic_apx,total_cost,curr_path)=fringe.pop(min_index)
+        #print(curr_move, curr_dist,heuristic_apx,total_cost,curr_path[-1])
         fringe_counter+=1
         for move in moves(IUB_map, *curr_move):
             if visited[move[1]][move[0]]==0 :
                 visited[move[1]][move[0]]=1
-                curr_path.append(curr_move[0])
-                curr_path.append(curr_move[1])
+                print(curr_path[-1],curr_path[-2],curr_move[0],curr_move[1])
+                if curr_path[-2]!=(curr_move[0]) or curr_path[-1]!=(curr_move[1]) :
+                    curr_path.append(curr_move[0])
+                    curr_path.append(curr_move[1])                
                 if IUB_map[move[0]][move[1]]=="@":
                     curr_path.append(move[0])
                     curr_path.append(move[1])
