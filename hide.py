@@ -35,33 +35,29 @@ def add_friend(board, row, col):
 
 def successors(board,visible):
     xyz=[]
-    for r in range(0, len(board)):
+    for r in range(0, len(board)): 
         for c in range(0,len(board[0])):
             visible_new=copy.deepcopy(visible)
             if board[r][c] == '.' and visible_new[r][c]=='0':
-                for i in range(c,len(visible_new[0])):
-                    flag=0
+                for i in range(c,len(visible_new[0])):#east
                     if(board[r][i]=="&")or board[r][i]=="@":
-                        flag=1
-                    elif(board[r][i]==".") and flag==1:
+                        break
+                    elif(board[r][i]=="."):
                         visible_new[r][i]='1'
-                flag=0
-                for i in range(c,-1,-1):
+                for i in range(c,-1,-1):#west
                     if(board[r][i]=="&")or board[r][i]=="@":
-                        flag=1
-                    elif(board[r][i]==".")and flag==0:
+                        break
+                    elif(board[r][i]=="."):
                         visible_new[r][i]='1'
-                flag=0
-                for i in range(r,len(visible_new)):
+                for i in range(r,len(visible_new)):#south
                     if(board[i][c]=="&")or board[i][c]=="@":
-                        flag=1
-                    elif(board[r][i]==".")and flag==0:
+                        break
+                    elif(board[i][c]=="."):
                         visible_new[i][c]='1'
-                flag=0
-                for i in range(r,-1,-1):
+                for i in range(r,-1,-1):#north
                     if(board[i][c]=="&")or board[i][c]=="@":
-                        flag=1
-                    elif(board[r][i]=="&")and flag==0:
+                        break
+                    elif(board[i][c]=="."):
                         visible_new[i][c]='1'
                 xyz.append((add_friend(board, r, c),visible_new))
     #print(xyz)
@@ -74,6 +70,7 @@ def is_goal(board):
 # Solve n-rooks!
 def solve(initial_board):
     visible=[]
+    visited=[]
     """for col_i in range(len(initial_board)):
         for row_i in range(len(initial_board[0])):
             colarray_i.append(0)
@@ -83,14 +80,17 @@ def solve(initial_board):
     fringe = [(initial_board,visible)]
     while len(fringe) > 0:
         (board,visible)=fringe.pop()
-        print(printable_board(board)+'\n\n'+printable_board(visible)+'\n\n\n')
+        #print(printable_board(board)+'\n\n'+printable_board(visible)+'\n\n\n')
+        visited.append(board)
         xyz=successors(board,visible)
         for s in xyz:
             if is_goal(s[0]):
                 return(s[0])
            # print("new fringe")
             #print(fringe)
-            fringe.append(s)
+            if s[0] not in visited:
+                fringe.append(s)
+            
     return False
 
 # Main Function
