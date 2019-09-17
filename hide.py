@@ -1,3 +1,4 @@
+
 #!/usr/local/bin/python3
 #
 # hide.py : a simple friend-hider
@@ -11,6 +12,7 @@
 #
 
 import sys
+import copy
 
 # Parse the map from a given filename
 def parse_map(filename):
@@ -35,31 +37,35 @@ def successors(board,visible):
     xyz=[]
     for r in range(0, len(board)):
         for c in range(0,len(board[0])):
-            visible_new=visible
-            if board[r][c] == '.' and visible_new[r][c]==0:
+            visible_new=copy.deepcopy(visible)
+            if board[r][c] == '.' and visible_new[r][c]=='0':
                 for i in range(c,len(visible_new[0])):
+                    flag=0
                     if(board[r][i]=="&")or board[r][i]=="@":
-                        break
-                    elif(board[r][i]=="."):
-                        visible_new[r][i]=1
-                for i in range(c,0,-1):
+                        flag=1
+                    elif(board[r][i]==".") and flag==1:
+                        visible_new[r][i]='1'
+                flag=0
+                for i in range(c,-1,-1):
                     if(board[r][i]=="&")or board[r][i]=="@":
-                        break
-                    elif(board[r][i]=="."):
-                        visible_new[r][i]=1
-                for i in range(r,len(visible)):
+                        flag=1
+                    elif(board[r][i]==".")and flag==0:
+                        visible_new[r][i]='1'
+                flag=0
+                for i in range(r,len(visible_new)):
                     if(board[i][c]=="&")or board[i][c]=="@":
-                        break
-                    elif(board[r][i]=="."):
-                        visible_new[i][c]=1
-                for i in range(r,0,-1):
+                        flag=1
+                    elif(board[r][i]==".")and flag==0:
+                        visible_new[i][c]='1'
+                flag=0
+                for i in range(r,-1,-1):
                     if(board[i][c]=="&")or board[i][c]=="@":
-                        break
-                    elif(board[r][i]=="&"):
-                        visible_new[i][c]=1
+                        flag=1
+                    elif(board[r][i]=="&")and flag==0:
+                        visible_new[i][c]='1'
                 xyz.append((add_friend(board, r, c),visible_new))
-    print(xyz)
-    return (xyz),visible
+    #print(xyz)
+    return (xyz)
 
 # check if board is a goal state
 def is_goal(board):
@@ -67,23 +73,24 @@ def is_goal(board):
 
 # Solve n-rooks!
 def solve(initial_board):
-    colarray_i=[]
     visible=[]
-    for col_i in range(len(initial_board)):
+    """for col_i in range(len(initial_board)):
         for row_i in range(len(initial_board[0])):
             colarray_i.append(0)
         visible.append(colarray_i.copy())
-        colarray_i.clear()
+        colarray_i.clear()"""
+    visible=[['0' for i in range(len(initial_board[0]))] for j in range(len(initial_board))]
     fringe = [(initial_board,visible)]
     while len(fringe) > 0:
-        board,visible=fringe.pop() 
-        xyz,visible_new=successors(board,visible)
+        (board,visible)=fringe.pop()
+        print(printable_board(board)+'\n\n'+printable_board(visible)+'\n\n\n')
+        xyz=successors(board,visible)
         for s in xyz:
-            if is_goal(s):
-                return(s)
+            if is_goal(s[0]):
+                return(s[0])
            # print("new fringe")
             #print(fringe)
-            fringe.append((s,visible_new.copy()))
+            fringe.append(s)
     return False
 
 # Main Function
