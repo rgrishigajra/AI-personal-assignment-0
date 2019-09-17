@@ -31,14 +31,35 @@ def add_friend(board, row, col):
 
 # Get list of successors of given board state
 
-def successors(board):
+def successors(board,visible):
     xyz=[]
-    xyz.clear()
     for r in range(0, len(board)):
         for c in range(0,len(board[0])):
-            if board[r][c] == '.':
-                xyz.append(add_friend(board, r, c))
-    return xyz
+            visible_new=visible
+            if board[r][c] == '.' and visible_new[r][c]==0:
+                for i in range(c,len(visible_new[0])):
+                    if(board[r][i]=="&")or board[r][i]=="@":
+                        break
+                    elif(board[r][i]=="."):
+                        visible_new[r][i]=1
+                for i in range(c,0,-1):
+                    if(board[r][i]=="&")or board[r][i]=="@":
+                        break
+                    elif(board[r][i]=="."):
+                        visible_new[r][i]=1
+                for i in range(r,len(visible)):
+                    if(board[i][c]=="&")or board[i][c]=="@":
+                        break
+                    elif(board[r][i]=="."):
+                        visible_new[i][c]=1
+                for i in range(r,0,-1):
+                    if(board[i][c]=="&")or board[i][c]=="@":
+                        break
+                    elif(board[r][i]=="&"):
+                        visible_new[i][c]=1
+                xyz.append((add_friend(board, r, c),visible_new))
+    print(xyz)
+    return (xyz),visible
 
 # check if board is a goal state
 def is_goal(board):
@@ -46,19 +67,29 @@ def is_goal(board):
 
 # Solve n-rooks!
 def solve(initial_board):
-    fringe = [initial_board]
+    colarray_i=[]
+    visible=[]
+    for col_i in range(len(initial_board)):
+        for row_i in range(len(initial_board[0])):
+            colarray_i.append(0)
+        visible.append(colarray_i.copy())
+        colarray_i.clear()
+    fringe = [(initial_board,visible)]
     while len(fringe) > 0:
-        for s in successors( fringe.pop() ):
-            print(s)
+        board,visible=fringe.pop() 
+        xyz,visible_new=successors(board,visible)
+        for s in xyz:
             if is_goal(s):
                 return(s)
-            fringe.append(s)
+           # print("new fringe")
+            #print(fringe)
+            fringe.append((s,visible_new.copy()))
     return False
 
 # Main Function
 if __name__ == "__main__":
     IUB_map=parse_map(sys.argv[1])
-
+    #print(visible)
     # This is K, the number of friends
     K = int(sys.argv[2])
     print ("Starting from initial board:\n" + printable_board(IUB_map) + "\n\nLooking for solution...\n")
