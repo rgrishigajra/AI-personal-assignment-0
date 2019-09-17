@@ -30,8 +30,15 @@ def add_friend(board, row, col):
     return board[0:row] + [board[row][0:col] + ['F',] + board[row][col+1:]] + board[row+1:]
 
 # Get list of successors of given board state
+
 def successors(board):
-    return [ add_friend(board, r, c) for r in range(0, len(board)) for c in range(0,len(board[0])) if board[r][c] == '.' ]
+    xyz=[]
+    xyz.clear()
+    for r in range(0, len(board)):
+        for c in range(0,len(board[0])):
+            if board[r][c] == '.':
+                xyz.append(add_friend(board, r, c))
+    return xyz
 
 # check if board is a goal state
 def is_goal(board):
@@ -42,6 +49,7 @@ def solve(initial_board):
     fringe = [initial_board]
     while len(fringe) > 0:
         for s in successors( fringe.pop() ):
+            print(s)
             if is_goal(s):
                 return(s)
             fringe.append(s)

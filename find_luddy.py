@@ -74,6 +74,7 @@ def search1(IUB_map):
                 if IUB_map[move[0]][move[1]]=="@":
                     curr_path.append(move[0])
                     curr_path.append(move[1])
+                    print(fringe)
                     #print("lenght of the fringe"+str(fringe_counter))
                     return (curr_dist+1),heuristic_apx,total_cost,curr_path
                 else:
@@ -101,5 +102,5 @@ if __name__ == "__main__":
             directions+="S"
     print(curr_dist,directions)
     #print(end-start)
-    
+        
     

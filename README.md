@@ -8,6 +8,8 @@ program Got much faster.Even the number of elements in the fringe got reduced.
  
 Final out put
  
+ 
+
 
 
 
