@@ -3,7 +3,7 @@
 #
 # hide.py : a simple friend-hider
 #
-# Submitted by : [PUT YOUR NAME AND USERNAME HERE]
+# Submitted by : Rishabh Gajra rgajra
 #
 # Based on skeleton code by D. Crandall and Z. Kachwala, 2019
 #
@@ -37,29 +37,29 @@ def successors(board,visible):
     xyz=[]
     for r in range(0, len(board)): 
         for c in range(0,len(board[0])):
-            visible_new=copy.deepcopy(visible)
-            if board[r][c] == '.' and visible_new[r][c]=='0':
-                for i in range(c,len(visible_new[0])):#east
+            visible_new=copy.deepcopy(visible) 	
+            if board[r][c] == '.' and visible_new[r][c]=='0':		
+                for i in range(c,len(visible_new[0])):#adding nodes east to visible list
                     if(board[r][i]=="&")or board[r][i]=="@":
                         break
                     elif(board[r][i]=="."):
                         visible_new[r][i]='1'
-                for i in range(c,-1,-1):#west
+                for i in range(c,-1,-1):#adding nodes west to visible list
                     if(board[r][i]=="&")or board[r][i]=="@":
                         break
                     elif(board[r][i]=="."):
                         visible_new[r][i]='1'
-                for i in range(r,len(visible_new)):#south
+                for i in range(r,len(visible_new)):#adding nodes south to visible list
                     if(board[i][c]=="&")or board[i][c]=="@":
                         break
                     elif(board[i][c]=="."):
                         visible_new[i][c]='1'
-                for i in range(r,-1,-1):#north
+                for i in range(r,-1,-1):#adding nodes north to visible list
                     if(board[i][c]=="&")or board[i][c]=="@":
                         break
                     elif(board[i][c]=="."):
                         visible_new[i][c]='1'
-                xyz.append((add_friend(board, r, c),visible_new))
+                xyz.append((add_friend(board, r, c),visible_new)) #passing updated visible array to further nodes
     #print(xyz)
     return (xyz)
 
