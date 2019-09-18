@@ -1,5 +1,6 @@
 # a0
 PART ONE 
+
 For the initial code the program had the following search abstraction
 The given code tries to implement Depth first search.
 Goal state:The goal state is when algorithm reaches "@" luddy hall on man
@@ -19,10 +20,15 @@ Created a visited nodes array so the algorithm doesnt calculate for fringes that
 For noting down the path I traced the difference in the cordinates and appended NSEW wrt outputx
 
 PART TWO hide.py
+
 For this code the challenge was to avoid two friends from seeing each other. Its a lot like the n-rooks problem where pawns are the obstructions and not buildings. To solve a conflict situation I implmented a visible array in the fringe that keeps track of what all positions are visible by some friend. Then out of all the places not currently visible i place a new friend on the map. 
 
 Goal state: when all K friends are placed on the board and no two of them see each other.
+
 set of valid states:Is the map where some N friends are on the map and 0<=N<=K and none of the two N friends see each other.
+
 Cost function is number of friends not placed on the board out of K.
+
 Initial state is empty map with the buildings, luddy hall and me on the map along with empty side walks.
+
 successor function is every sidewalk space that is not visible for any friend on the map
