@@ -3,10 +3,15 @@ PART ONE
 
 For the initial code the program had the following search abstraction
 The given code tries to implement Depth first search.
+
 Goal state:The goal state is when algorithm reaches "@" luddy hall on man
+
 set of valid states: is every step from one sidewalk postiion to other where 
+
 The cost funciton is one for every step that is taken.
+
 initial state is the starting map given in argument
+
 The successor function is the (x+1,y),(x,y+1),(x-1,y),(x,y-1) where (x,y) is current cordinates 
 
 Finding whats wrong with the code given.It goes in an Infinite loop since the fringe acts as a stack and it keeps visiting and expanding the same two nodes. Due to this the program never moves towards the solution. Attempt no 1 to fix this is to convert the fringe to work as a queue. It maybe visit repeated nodes but it still reach an answer.
