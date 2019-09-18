@@ -74,33 +74,38 @@ def search1(IUB_map):
                 if IUB_map[move[0]][move[1]]=="@":
                     curr_path.append(move[0])
                     curr_path.append(move[1])
-                    print(fringe)
+                    #print(fringe)
                     #print("lenght of the fringe"+str(fringe_counter))
-                    return (curr_dist+1),heuristic_apx,total_cost,curr_path
+                    return (curr_dist+1),heuristic_apx,total_cost,curr_path,True
                 else:
                     #print((move, curr_dist + 1, heuristic[move[1]][move[0]], curr_dist + 1+ heuristic[move[1]][move[0]]))
                     #print(move, curr_dist + 1, heuristic[move[1]][move[0]], curr_dist + 1+ heuristic[move[1]][move[0]],path)
                     fringe.append((move, curr_dist + 1, heuristic[move[1]][move[0]], curr_dist + 1+ heuristic[move[1]][move[0]],curr_path.copy()))
+    return 'Inf',0,0,0,False
+
 # Main Function
 if __name__ == "__main__":
     IUB_map=parse_map(sys.argv[1])
     print("Shhhh... quiet while I navigate!")
     directions=""
     start= timeit.default_timer()    
-    curr_dist,heuristic_apx,total_cost,final_path, = search1(IUB_map)
-    end= timeit.default_timer()    
+    curr_dist,heuristic_apx,total_cost,final_path,bol = search1(IUB_map)
+    end= timeit.default_timer()
     print("Here's the solution I found:")
-    for i in range(0,(len(final_path)-2),2):
-        if final_path[i]-final_path[i+2]==0:
-            if(final_path[i+1]-final_path[i+3])==1:
-                directions+="W"
+    if(bol==False):
+        print(curr_dist)
+    else:
+        for i in range(0,(len(final_path)-2),2):
+            if final_path[i]-final_path[i+2]==0:
+                if(final_path[i+1]-final_path[i+3])==1:
+                    directions+="W"
+                else:
+                    directions+="E"
+            elif final_path[i]-final_path[i+2]==1:
+                directions+="N"
             else:
-                directions+="E"
-        elif final_path[i]-final_path[i+2]==1:
-            directions+="N"
-        else:
-            directions+="S"
-    print(curr_dist,directions)
-    #print(end-start)
+                directions+="S"
+        print(curr_dist,directions)
+        #print(end-start)
         
     
