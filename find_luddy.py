@@ -59,7 +59,7 @@ def search1(IUB_map):
     path=[]
     path.append(you_loc[0])#path is an array that stores a string of cordinates that are traversed 
     path.append(you_loc[1])
-    fringe=[(you_loc,0,heuristic[you_loc[0]][you_loc[1]],0+heuristic[you_loc[0]][you_loc[1]],path)] #adding heuristic and total cost = current distance+heuristic and path in fringe
+    fringe=[(you_loc,0,heuristic[you_loc[1]][you_loc[0]],0+heuristic[you_loc[1]][you_loc[0]],path)] #adding heuristic and total cost = current distance+heuristic and path in fringe
     #print(fringe)
     fringe_counter=0
     #print(fringe[0][0])
