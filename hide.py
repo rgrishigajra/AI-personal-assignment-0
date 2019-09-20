@@ -44,26 +44,31 @@ def successors(board,visible):
             if board[r][c] == '.' and visible_new[r][c]==0:		
                 for i in range(c,len(visible_new[0])):#adding nodes east to visible list
                     if(board[r][i]=="&")or board[r][i]=="@":
+                        visible_new[r][i]=2
                         break
                     elif(board[r][i]=="."):
                         visible_new[r][i]=1
                 for i in range(c,-1,-1):#adding nodes west to visible list
                     if(board[r][i]=="&")or board[r][i]=="@":
+                        visible_new[r][i]=2
                         break
                     elif(board[r][i]=="."):
                         visible_new[r][i]=1
                 for i in range(r,len(visible_new)):#adding nodes south to visible list
                     if(board[i][c]=="&")or board[i][c]=="@":
+                        visible_new[r][i]=2
                         break
                     elif(board[i][c]=="."):
                         visible_new[i][c]=1
                 for i in range(r,-1,-1):#adding nodes north to visible list
                     if(board[i][c]=="&")or board[i][c]=="@":
+                        visible_new[r][i]=2
                         break
                     elif(board[i][c]=="."):
                         visible_new[i][c]=1
-                        
-                xyz.append((add_friend(board, r, c),visible_new)) #passing updated visible array to further nodes
+                v_count=(visible == 0).sum()
+                if(v_count>=K):
+                    xyz.append((add_friend(board, r, c),visible_new)) #passing updated visible array to further nodes
     #print(xyz)
     return (xyz)
 
@@ -75,11 +80,6 @@ def is_goal(board):
 def solve(initial_board):
     visible=[]
     visited=[]
-    """for col_i in range(len(initial_board)):
-        for row_i in range(len(initial_board[0])):
-            colarray_i.append(0)
-        visible.append(colarray_i.copy())
-        colarray_i.clear()"""
     visible=np.zeros([len(initial_board),len(initial_board[0])],dtype=int)
     fringe = [(initial_board,visible)]
     while len(fringe) > 0:
@@ -104,9 +104,9 @@ if __name__ == "__main__":
     # This is K, the number of friends
     K = int(sys.argv[2])
     print ("Starting from initial board:\n" + printable_board(IUB_map) + "\n\nLooking for solution...\n")
-    start= timeit.default_timer()
+    #start= timeit.default_timer()
     solution = solve(IUB_map)
-    end=timeit.default_timer()
+    #end=timeit.default_timer()
     print ("Here's what we found:")
     print (printable_board(solution) if solution else "None")
     #print(end-start)
